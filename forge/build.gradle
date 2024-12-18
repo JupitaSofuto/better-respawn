@@ -1,6 +1,7 @@
 plugins {
     id 'net.minecraftforge.gradle' version "${forgegradle_version}"
     id 'org.spongepowered.mixin' version "${mixingradle_version}"
+    id 'org.moddingx.modgradle.sourcejar' version '4.0.4-jupitersoft.6' apply false
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -10,10 +11,17 @@ apply plugin: 'mod-update'
 
 apply from: "https://raw.githubusercontent.com/henkelmax/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
 
+apply plugin: 'org.moddingx.modgradle.sourcejar'
+
 processResources {
     filesMatching('**/*.toml') {
         expand 'mod_version': mod_version,
                 'forge_dependency': forge_dependency,
                 'minecraft_version': minecraft_version
     }
+}
+
+sourceJarConfigure {
+    jarTask 'shadowJar'
+    additionalSourceDir '../common/src/main/java'
 }
